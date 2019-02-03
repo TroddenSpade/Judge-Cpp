@@ -5,9 +5,11 @@
 #include <stdlib.h>
 #include <cstring>
 
+#include "flip.cpp"
+
 using namespace std;
 
-string int_array_to_string(int int_array[], int size_of_array) {
+string intArrayToString(int int_array[], int size_of_array) {
   string returnstring = "";
   for (int temp = 0; temp < size_of_array; temp++)
     returnstring += int_array[temp]+'0';
@@ -39,39 +41,61 @@ void boardToArgv(int board[][10],string str[]){
         for(int j=1;j<9;j++){
         array[j-1]=board[i][j];
         }
-        str[i-1]=int_array_to_string(array,8);
+        str[i-1]=intArrayToString(array,8);
+    }
+}
+
+string play(string black,string white,int board[][column],int turn){
+    
+}
+
+void printTable(int table[row][column]){
+    cout<<"   ";
+    for(int i=0;i<column;i++)   cout<<i<<" ";
+    cout<< std::endl;
+    for(int i=0;i<row;i++){
+        cout<<i<<" ";
+        for(int j=0;j<column;j++){
+            cout<<table[i][j]<<" ";
+        }
+        cout<< std::endl;
+    }
+
+}
+
+int copyBoard(const int board1[row][column],int board2[row][column]){
+    for(int i=0;i<column;i++){
+        for(int j=0;j<row;j++){
+            board2[i][j]=board1[i][j];
+        }
     }
 }
 
 
-
 int main(){
+    const string Team[]={
+        "./fitgirl",
+        "./othello"
+    };
+    int board[8][8]={
+        {0, 0 ,0 ,0 ,0 ,0 ,0 ,0},
 
-    int board[10][10]={
-        {0, 0, 0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 },
+        {0 ,0 ,0 ,0 ,0 ,0 ,0 ,0},
 
-        {0, 0, 0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 },
+        {0, 0 ,0 ,0 ,0 ,0 ,0 ,0},
 
-        {0, 0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 },
+        {0 ,0 ,0 ,2 ,1 ,0 ,0 ,0},
 
-        {0, 0, 0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 },
+        {0 ,0 ,0 ,1 ,2 ,0 ,0 ,0},
 
-        {0, 0 ,0 ,0 ,1 ,2 ,0 ,0 ,0 ,0 },
+        {0 ,0 ,0 ,0 ,0 ,0 ,0 ,0},
 
-        {0, 0 ,0 ,0 ,1 ,2 ,0 ,0 ,0 ,0 },
+        {0 ,0 ,0 ,0 ,0 ,0 ,0 ,0},
 
-        {0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 },
-
-        {0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 },
-
-        {0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 },
-        
-        {0, 0, 0 ,0 ,0 ,0 ,0 ,0 ,0 ,0}
+        {0 ,0 ,0 ,0 ,0 ,0 ,0 ,0}        
     };
 
-    string str[8];
-    boardToArgv(board,str);
+    // play(Team[1],Team[2],board,turn);
 
-    cout << str[4];
-    
+    return 0;
 }
