@@ -13,6 +13,7 @@ int isInTable(int x,int y){
 }
 
 int validNorth(int x0,int y0 ,int x ,int y, const int table[row][column],int player){    ////
+    if(table[y0][x0]!=0)    return-1;
     y-=1;
     if(!isInTable(x,y))  return -1;
 
@@ -25,6 +26,7 @@ int validNorth(int x0,int y0 ,int x ,int y, const int table[row][column],int pla
 }
 
 int validSouth(int x0,int y0 ,int x ,int y, const int table[row][column],int player){    ////
+    if(table[y0][x0]!=0)    return-1;
     y+=1;
     if(!isInTable(x,y))  return -1;
 
@@ -37,6 +39,7 @@ int validSouth(int x0,int y0 ,int x ,int y, const int table[row][column],int pla
 }
 
 int validWest(int x0,int y0 ,int x ,int y, const int table[row][column],int player){     ////
+    if(table[y0][x0]!=0)    return-1;
     x-=1;
     if(!isInTable(x,y))  return -1;
 
@@ -49,6 +52,7 @@ int validWest(int x0,int y0 ,int x ,int y, const int table[row][column],int play
 }
 
 int validEast(int x0,int y0 ,int x ,int y, const int table[row][column],int player){     ////
+    if(table[y0][x0]!=0)    return-1;
     x+=1;
     if(!isInTable(x,y))  return -1;
 
@@ -61,6 +65,7 @@ int validEast(int x0,int y0 ,int x ,int y, const int table[row][column],int play
 }
 
 int validNW(int x0,int y0 ,int x ,int y, const int table[row][column],int player){       ////
+    if(table[y0][x0]!=0)    return-1;
     y-=1;   x-=1;
     if(!isInTable(x,y))  return -1;
 
@@ -73,6 +78,7 @@ int validNW(int x0,int y0 ,int x ,int y, const int table[row][column],int player
 }
 
 int validNE(int x0,int y0 ,int x ,int y, const int table[row][column],int player){
+    if(table[y0][x0]!=0)    return-1;
     y-=1;   x+=1;
     if(!isInTable(x,y))  return -1;
 
@@ -85,6 +91,7 @@ int validNE(int x0,int y0 ,int x ,int y, const int table[row][column],int player
 }
 
 int validSW(int x0,int y0 ,int x ,int y, const int table[row][column],int player){
+    if(table[y0][x0]!=0)    return-1;
     y+=1;   x-=1;
     if(!isInTable(x,y))  return -1;
 
@@ -97,6 +104,7 @@ int validSW(int x0,int y0 ,int x ,int y, const int table[row][column],int player
 }
 
 int validSE(int x0,int y0 ,int x ,int y, const int table[row][column],int player){
+    if(table[y0][x0]!=0)    return-1;
     y+=1;   x+=1;
     if(!isInTable(x,y))  return -1;
 
