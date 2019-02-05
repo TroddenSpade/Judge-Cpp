@@ -74,6 +74,20 @@ int copyBoard(const int board1[row][column],int board2[row][column]){
     }
 }
 
+int winner(const int board[row][column]){
+    int p1=0;
+    int p2=0;
+    for(int i=0;i<column;i++){
+        for(int j=0;j<row;j++){
+            if(board[i][j]==1)  p1++;
+            if(board[i][j]==2)  p2++;
+        }
+    }
+    if(p1>p2)   return 1;
+    if(p1==p2)  return 0;
+    if(p2>p1)   return 2;
+}
+
 void play(string black,string white,int board[][column],int player,int *result){
     
     string argv = boardToArgv(board);
@@ -87,16 +101,13 @@ void play(string black,string white,int board[][column],int player,int *result){
 
     int x = value[0] - 48;
     int y = value[2] - 48;
-
-    
-
     if(doFlip(x,y,board,player) && isInTable(x,y)){
-        cout<<"-Player: "<<player<<"  -Move :"<<value<<endl ;
+        cout<<"-Player: "<<player<<"  -Move :"<<x<<","<<y<<endl ;
         *result = 0;
         
     }else{
-        cout<< "Player: "<<player<<" Cant move/Invalid Move !"<<endl;
-        *result ++;
+        cout<< "Player: "<<player<<" Cant Move/Invalid Move !: "<<x<<","<<y<<endl;
+        *result+=1;
     }
     printBoard(board);
     cout<<"-----------------------"<<endl;
@@ -112,14 +123,13 @@ void game(string black,string white,int board1[][column]){
         if(result == 2) break;
         count ++;
     }
-
-    cout << "K.O idont know who won the game !";
+    cout << "Finish Player : "<<winner(board)<<" Won!";
 }
 
 int main(){
     const string Team[]={
-        "./a.out",
-        "./othello"
+        "./mohammad",
+        "./parsa"
     };
     int board[8][8]={
         {0, 0 ,0 ,0 ,0 ,0 ,0 ,0},
@@ -139,7 +149,9 @@ int main(){
         {0 ,0 ,0 ,0 ,0 ,0 ,0 ,0}        
     };
     
-    game(Team[0],Team[0],board);
+    game(Team[0],Team[1],board);
+    getchar();
+    game(Team[1],Team[0],board);
 
     return 0;
 }
