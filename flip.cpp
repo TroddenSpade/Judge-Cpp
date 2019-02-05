@@ -111,91 +111,91 @@ int validSE(int x0,int y0 ,int x ,int y, const int table[row][column],int player
 ///////////////////////////////   Flip    //////////////////////////////////////
 
 int flipNorth(int x ,int y, int table[row][column],int player){    ////
-    if (validNorth(x,y,x,y,table,player)== -1)  return 0;
+    if (validNorth(x,y,x,y,table,player)== -1)  return 1;
     table[y][x] =player;
     y-=1;
     while(table[y][x] == 3 - player){
         table[y][x]= player;
         y-=1;
     }
-    return 1;
+    return 0;
 }
 
 int flipSouth(int x ,int y, int table[row][column],int player){    ////
-    if (validSouth(x,y,x,y,table,player)== -1)  return 0;
+    if (validSouth(x,y,x,y,table,player)== -1)  return 1;
     table[y][x] =player;
     y+=1;
     while(table[y][x] == 3 - player){
         table[y][x]= player;
         y+=1;
     }
-    return 1;
+    return 0;
 }
 
 int flipWest(int x ,int y, int table[row][column],int player){     ////
-    if (validWest(x,y,x,y,table,player)== -1)  return 0;
+    if (validWest(x,y,x,y,table,player)== -1)  return 1;
     table[y][x] = player;
     x-=1;
     while(table[y][x] == 3 - player){
         table[y][x]= player;
         x-=1;
     }
-    return 1;
+    return 0;
 }
 
 int flipEast(int x ,int y, int table[row][column],int player){     ////
-    if (validEast(x,y,x,y,table,player)== -1)  return 0;
+    if (validEast(x,y,x,y,table,player)== -1)  return 1;
     table[y][x] = player;
     x+=1;
     while(table[y][x] == 3 - player){
         table[y][x]=player;
         x+=1;
     }
-    return 1;
+    return 0;
 }
 
 int flipNW(int x ,int y, int table[row][column],int player){       ////
-    if (validNW(x,y,x,y,table,player)== -1)  return 0;
+    if (validNW(x,y,x,y,table,player)== -1)  return 1;
     table[y][x] = player;
     y-=1;   x-=1;
     while(table[y][x] == 3 - player){
         table[y][x]= player;
         y-=1;   x-=1;
     }
-    return 1;
+    return 0;
 }
 
 int flipNE(int x ,int y, int table[row][column],int player){
-    if (validNE(x,y,x,y,table,player)== -1)  return 0;
+    if (validNE(x,y,x,y,table,player)== -1)  return 1;
     table[y][x] = player;
     y-=1;   x+=1;
     while(table[y][x] == 3 - player){
         table[y][x]= player;
         y-=1;   x+=1;
     }
-    return 1;
+    return 0;
 }
 
 int flipSW(int x ,int y, int table[row][column],int player){
-    if (validSW(x,y,x,y,table,player)== -1)  return 0;
+    if (validSW(x,y,x,y,table,player)== -1)  return 1;
     table[y][x] = player;
     y+=1;   x-=1;
     while(table[y][x] == 3 - player){
         table[y][x]= player;
         y+=1;   x-=1;
     }
-    return 1;
+    return 0;
 }
 
 int flipSE(int x ,int y, int table[row][column],int player){
-    if (validSE(x,y,x,y,table,player)== -1)  return 0;
+    if (validSE(x,y,x,y,table,player)== -1)  return 1;
     table[y][x] = player;
     y+=1;   x+=1;
     while(table[y][x] == 3 - player){
         table[y][x]= player;
         y+=1;   x+=1;
     }
-    return 1;
+    return 0;
 }
 
 int doFlip(int x ,int y, int table[row][column],int player){
@@ -208,5 +208,5 @@ int doFlip(int x ,int y, int table[row][column],int player){
     result *=flipNW(x ,y,table,player);
     result *=flipSE(x ,y,table,player);
     result *=flipSW(x ,y,table,player);
-    return result;
+    return 1-result;
 }
