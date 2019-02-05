@@ -35,22 +35,25 @@ string exec(string str) {
     return result;
 }
 
-void boardToArgv(int board[][10],string str[]){
-    for(int i=1;i<9;i++){
-        int array[8];
-        for(int j=1;j<9;j++){
-        array[j-1]=board[i][j];
+string boardToArgv(int board[][column]){
+    string str[column];
+    for(int i=0;i<row;i++){
+        int array[column];
+        for(int j=0;j<8;j++){
+        array[j]=board[i][j];
         }
-        str[i-1]=intArrayToString(array,8);
+        str[i]=intArrayToString(array,column);
     }
+    string argv = " ";
+    for(int i =0;i<8;i++){
+        argv+= str[i];
+        argv+=" ";
+    }
+    return argv;
 }
 
-string play(string black,string white,int board[][column],int turn){
-    
-}
-
-void printTable(int table[row][column]){
-    cout<<"   ";
+void printBoard(int table[row][column]){
+    cout<<"  ";
     for(int i=0;i<column;i++)   cout<<i<<" ";
     cout<< std::endl;
     for(int i=0;i<row;i++){
@@ -71,10 +74,51 @@ int copyBoard(const int board1[row][column],int board2[row][column]){
     }
 }
 
+void play(string black,string white,int board[][column],int player,int *result){
+    
+    string argv = boardToArgv(board);
+
+    if(player == 1)
+        argv = black + argv + "1";
+    else
+        argv = white + argv + "2";
+
+    string value = exec(argv);
+
+    int x = value[0] - 48;
+    int y = value[2] - 48;
+
+    
+
+    if(doFlip(x,y,board,player) && isInTable(x,y)){
+        cout<<"-Player: "<<player<<"  -Move :"<<value<<endl ;
+        *result = 0;
+        
+    }else{
+        cout<< "Player: "<<player<<" Cant move/Invalid Move !"<<endl;
+        *result ++;
+    }
+    printBoard(board);
+    cout<<"-----------------------"<<endl;
+}
+
+void game(string black,string white,int board1[][column]){
+    int result = 0;
+    int count =0;
+    int board[row][column];
+    copyBoard(board1,board);
+    while(1){
+        play(black,white,board,count%2+1,&result);
+        if(result == 2) break;
+        count ++;
+    }
+
+    cout << "K.O idont know who won the game !";
+}
 
 int main(){
     const string Team[]={
-        "./fitgirl",
+        "./a.out",
         "./othello"
     };
     int board[8][8]={
@@ -94,8 +138,8 @@ int main(){
 
         {0 ,0 ,0 ,0 ,0 ,0 ,0 ,0}        
     };
-
-    // play(Team[1],Team[2],board,turn);
+    
+    game(Team[0],Team[0],board);
 
     return 0;
 }
