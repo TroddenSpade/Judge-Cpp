@@ -7,6 +7,8 @@
 
 #include "flip.cpp"
 
+#define NoTeams 3
+
 using namespace std;
 
 string intArrayToString(int int_array[], int size_of_array) {
@@ -88,49 +90,137 @@ int winner(const int board[row][column]){
     if(p2>p1)   return 2;
 }
 
+void printBoardToFile(const int board[row][column],FILE *fptr){
+    fprintf(fptr,"%s","   0 1 2 3 4 5 6 7\n");
+    string str[column];
+    for(int i=0;i<row;i++){
+        fprintf(fptr,"%d",i);
+        fprintf(fptr,"%s"," :");
+        for(int j=0;j<8;j++){
+            fprintf(fptr,"%d",board[i][j]);
+            fprintf(fptr,"%s"," ");
+        }
+        // str[i]="i :"+intArrayToString(array,column)+"\n";
+        // char stri[str[i].size() + 1];
+	    // strcpy(stri, str[i].c_str());
+        fprintf(fptr,"%s","\n");
+    }
+}
+
+
 void play(string black,string white,int board[][column],int player,int *result){
     
     string argv = boardToArgv(board);
 
     if(player == 1)
-        argv = black + argv + "1";
+        argv ="./codes/" + black + argv + "1";
     else
-        argv = white + argv + "2";
+        argv ="./codes/" + white + argv + "2";
 
     string value = exec(argv);
 
     int x = value[0] - 48;
     int y = value[2] - 48;
+
+    FILE *fptr;
+    string name ="./logs/" + black + " - " + white+".txt";
+    char nameChar[name.size() + 1];
+	strcpy(nameChar, name.c_str());
+    fptr = fopen(nameChar,"a");
     if(doFlip(x,y,board,player) && isInTable(x,y)){
-        cout<<"-Player: "<<player<<"  -Move :"<<x<<","<<y<<endl ;
+        string str;
+        string xStr = to_string(x);
+        string yStr = to_string(y);
+        string playerStr = to_string(player);
+        str = "-Player: "+playerStr+"  -Move :"+xStr+","+yStr+"\n";
+        char stri[str.size() + 1];
+	    strcpy(stri, str.c_str());
+        fprintf(fptr,"%s",stri);
+        
+        // cout<<"-Player: "<<player<<"  -Move :"<<x<<","<<y<<endl ;
         *result = 0;
         
     }else{
-        cout<< "Player: "<<player<<" Cant Move/Invalid Move !: "<<x<<","<<y<<endl;
+        string str;
+        string xStr = to_string(x);
+        string yStr = to_string(y);
+        string playerStr = to_string(player);
+        str = "-Player: "+playerStr+" Cant Move/Invalid Move !: "+xStr+","+yStr+"\n";
+        char stri[str.size() + 1];
+	    strcpy(stri, str.c_str());
+        fprintf(fptr,"%s",stri);
+
+        // cout<< "-Player: "<<player<<" Cant Move/Invalid Move !: "<<x<<","<<y<<endl;
         *result+=1;
     }
-    printBoard(board);
-    cout<<"-----------------------"<<endl;
+    printBoardToFile(board,fptr);
+    // printBoard(board);
+    fprintf(fptr,"%s","-----------------------\n");
+    // cout<<"-----------------------"<<endl;
+    fclose(fptr);
 }
 
-void game(string black,string white,int board1[][column]){
+int game(string black,string white,int board1[][column]){
     int result = 0;
     int count =0;
     int board[row][column];
     copyBoard(board1,board);
+
+    FILE *fgame;
+    fgame=fopen("games.txt","a");
+
     while(1){
         play(black,white,board,count%2+1,&result);
         if(result == 2) break;
         count ++;
     }
-    cout << "Finish Player : "<<winner(board)<<" Won!";
+
+    if(winner(board)==1){
+        string str = black + " > " + white+"\n";
+        char stri[str.size() + 1];
+	    strcpy(stri, str.c_str());
+        fprintf(fgame,"%s",stri);
+
+        cout << black << " > " << white;
+        return 1;
+    }else if(winner(board)==2){
+        string str = black + " > " + white+"\n";
+        char stri[str.size() + 1];
+	    strcpy(stri, str.c_str());
+        fprintf(fgame,"%s",stri);
+
+        cout << black << " < " << white;
+        return 2;
+    }else if(winner(board)==0){
+        string str = black + " > " + white+"\n";
+        char stri[str.size() + 1];
+	    strcpy(stri, str.c_str());
+        fprintf(fgame,"%s",stri);
+
+        cout << black << " = " << white;
+        return 0;
+    }
+    fclose(fgame);
 }
 
 int main(){
     const string Team[]={
-        "./mohammad",
-        "./parsa"
+        "Force",
+        "LQ",
+        // "iran16",
+        // "Magic_world",
+        // "SSDEBF",
+        // "MONOLITH",
+        // "Loser",
+        // "NumOne01",
+        // "flipper_the_dolphin",
+        // "Oftaadegaan",
+        // "shift",
+        "Boro_dame_khoontoon_bazi_kon",
+        // "EH"
     };
+    int table[NoTeams][3]={0};
+
     int board[8][8]={
         {0, 0 ,0 ,0 ,0 ,0 ,0 ,0},
 
@@ -148,10 +238,50 @@ int main(){
 
         {0 ,0 ,0 ,0 ,0 ,0 ,0 ,0}        
     };
+    int result;
+    for(int i =0;i<NoTeams;i++){
+        for(int j=i+1;j<NoTeams;j++){
+            result = game(Team[i],Team[j],board);
+            if(result==1){
+                table[i][0]++;
+                table[j][2]++;
+            }else if(result==2){
+                table[j][0]++;
+                table[i][2]++;
+            }else if(result==0){
+                table[j][1]++;
+                table[i][1]++;
+            }
+            getchar();
+            result = game(Team[j],Team[i],board);
+            if(result==1){
+                table[j][0]++;
+                table[i][2]++;
+            }else if(result==2){
+                table[i][0]++;
+                table[j][2]++;
+            }else if(result==0){
+                table[j][1]++;
+                table[i][1]++;
+            }
+            getchar();
+        }
+    }
     
-    game(Team[0],Team[1],board);
-    getchar();
-    game(Team[1],Team[0],board);
+    FILE *fscore;
+    fscore = fopen("score.txt","a");
+    fprintf(fscore,"%s","Teams");
+    fprintf(fscore,"%s","\t\t\t\t");
+    fprintf(fscore,"%s\t%s\t%s\n","Wins","draws","Loses");
+    for(int i=0;i<NoTeams;i++){
+        char stri[Team[i].size() + 1];
+	    strcpy(stri, Team[i].c_str());
+        fprintf(fscore,"%s",stri);
+        fprintf(fscore,"%s","\t\t\t\t");
+        fprintf(fscore,"%d\t%d\t%d\n",table[i][0],table[i][1],table[i][2]);
+    }
+
+    fclose(fscore);
 
     return 0;
 }
